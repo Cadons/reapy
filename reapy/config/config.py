@@ -44,14 +44,19 @@ class CaseInsensitiveDict(OrderedDict):
             self._dict[key.lower()] = value
 
     def __contains__(self, key):
+        if not isinstance(key, str):
+            return super().__contains__(key)
         return key.lower() in self._dict
 
     def __getitem__(self, key):
+        if not isinstance(key, str):
+            return super().__getitem__(key)
         return self._dict[key.lower()]
 
     def __setitem__(self, key, value):
         super().__setitem__(key, value)
-        self._dict[key.lower()] = value
+        if isinstance(key, str):
+            self._dict[key.lower()] = value
 
 
 class Config(ConfigParser):

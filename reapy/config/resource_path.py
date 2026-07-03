@@ -6,10 +6,6 @@ import sys
 import reapy
 from .shared_library import is_windows, is_apple
 
-if not reapy.is_inside_reaper():
-    # Third-party imports crash REAPER when run inside it.
-    import psutil
-
 
 def get_candidate_directories(detect_portable_install=True):
     if detect_portable_install:
@@ -43,6 +39,7 @@ def get_reaper_process_path():
         When zero or more than one REAPER instances are currently
         running.
     """
+    import psutil  # Third-party import that crashes REAPER; only import when called
     processes = [
         p for p in psutil.process_iter(['name', 'exe'])
         if os.path.splitext(p.info['name'])[0].lower() == 'reaper'
